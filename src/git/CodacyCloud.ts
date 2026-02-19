@@ -546,7 +546,8 @@ export class CodacyCloud implements vscode.Disposable {
   public async clear() {
     this._current = undefined
     // Clean up the rules file of repository information
-    if (isMCPConfigured()) createOrUpdateRules()
+    const generateRules = vscode.workspace.getConfiguration().get('codacy.guardrails.instructionsFile')
+    if (isMCPConfigured() && generateRules === 'automatic') createOrUpdateRules()
     if (!Config.apiToken) {
       this.state = CodacyCloudState.NeedsAuthentication
     } else {
